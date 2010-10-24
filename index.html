@@ -1,78 +1,181 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Console API</title>
+    <meta charset='utf-8'>
+    <script src='./respec/js/respec2.js' class='remove'></script>
+    <script class='remove'>
+      respec2([
+                "core/default-root-attr",
+                "core/style",
+                "w3c/style",
+                "w3c/headers",
+                "core/data-transform", // done REALLY early in case the transform ends up needing to include something
+                "core/data-include",
+                "core/inlines",
+                "w3c/bibref",
+                "core/structure",
+                "w3c/structure",
+                "core/dfn",
+                // these at the end
+                "w3c/unhtml5",
+                "core/remove-respec"
+              ], 
+              {
+                  specStatus: "unofficial",
+                  shortName:  "console-api",
+                  edDraftURI: "http://sideshowbarker.github.net/console-object",
+                  // previousPublishDate:  "2010-04-22",
+                  // previousMaturity: "FPWD",
+                  editors: [
+                        {   name:       "Michael(tm) Smith",
+                            url:        "http://sideshowbarker.net",
+                            mailto:     "mike@w3.org",
+                            // company:    "Vodafone",
+                            // companyURL: "http://vodafone.com/"
+                        },
+                  ],
+                  wgURI:        "http://w3.org/TK",
+                  wg:           "Web Developer Tools Working Group",
+                  wgPublicList: "wdt",
+                  wgPatentURI:  "http://w3.org/TK",
+                  additionalCopyrightHolders: "Michael(tm) Smith"
+              }
+      );
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This is documentation for the browser <code>console</code> object
+        and its API.
+      </p>
+    </section>
+    <section id='sotd'>
+      <p>
+        This is just a blurb.
+      </p>
+    </section>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <section id='conformance'>
+      <p>
+        This is another blurb.
+      </p>
+    </section>
 
-	<title>sideshowbarker/console-object @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #06f922;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #f906dd; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #f906dd; }
-    h3 { text-align: center; color: #f906dd; }
-    a { color: #f906dd; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
-</head>
+    <section>
+      <h2>RFC 2119 is not OPTIONAL</h2>
+      <p>
+        There are several RFC 2119 keywords: MUST, MUST NOT, REQUIRED, SHALL, SHALL
+        NOT, SHOULD, SHOULD NOT, RECOMMENDED,  MAY, and OPTIONAL. They are only recognised in
+        uppercase, so that one may still write normally if one must. Importantly, the MUST
+        NOT fail when happening over line breaks, but:
+      </p>
+      <ul>
+        <li>MUST</li>
+        <li>NOT</li>
+        <li>work over element boundaries.</li>
+      </ul>
+    </section>
+    
+    
+    <section class='informative'>
+      <h2>Small Talk about Abbreviations</h2>
+      <p>
+        W3C is no different from other geek outfits, and is therefore full of abbreviations.
+        We don't care about the silly debate going on about <code>abbr</code> and <code>acronym</code>,
+        we just support whatever people use, so that the following all ought to work:
+      </p>
+      <ul>
+        <li><acronym title='Devilishly Awesome Hypertext Über Troll'>DAHUT</acronym> and DAHUT</li>
+        <li><abbr title='abbreviation'>abbr</abbr> and abbr</li>
+        <li><abbr title='seriously'>srsly</abbr> and srsly</li>
+      </ul>
+    </section>
+    
+    
+    <section class='informative'>
+      <h2>A Defining Moment</h2>
+      <p>
+        A <dfn>definition</dfn> is an element that marks out a term that is defined in the current
+        block.
+      </p>
+      <p>
+        They can sometimes be <dfn title='definition with a title'>definitions with a title</dfn> so
+        that they can be written in the flow of the sentence without disruption.
+      </p>
+      <p>
+        Sometimes you will see an <dfn><abbr title='abbreviation-based definition'>AbbrDef</abbr></dfn>, which
+        is an abbreviation-based definition.
+      </p>
+      <p>
+        One thing that should definitely work is creating <dfn>definitions
+          over
+        multiple
+            lines</dfn> in the source.
+      </p>
+      <p>
+        It is then possible to reuse them. The title trick works both ways so that <a title='definition'>definitions</a>
+        can be reused fluidly. It would be possible to automatically detect them but for the time being
+        they require an <code>a</code> element.
+      </p>
+      <p>
+        This should have no problem mixing up with <code>abbr</code> as <a title='abbreviation-based definition'>AbbrDef</a> shows, and a <a>definition
+        with a title</a> works over several lines, just like <a>definitions over multiple lines</a>.
+      </p>
+    </section>
+    
+    <section>
+      <h2>A Good Reference</h2>
+      <p>
+        One can trivially make references to any specification, say for instance [[WIDGETS]], [[WICD]],
+        and even in a normative way [[!REX]] or [[!SVGMOBILE12]]. It's all about I18N, [[ZHMARK]].
+      </p>
+    </section>
+    
+    <section>
+      <h2>Russian Turtles</h2>
+      <p>
+        This section has an <code>h2</code> title in the original source.
+      </p>
+      <section>
+        <h2>Russian Turtles</h2>
+        <p>
+          This section has an <code>h2</code> title in the original source.
+        </p>
+        <section>
+          <h2>Russian Turtles</h2>
+          <p>
+            This section has an <code>h2</code> title in the original source.
+          </p>
+          <section>
+            <h2>Russian Turtles</h2>
+            <p>
+              This section has an <code>h2</code> title in the original source.
+            </p>
+            <section>
+              <h2>Russian Turtles</h2>
+              <p>
+                This section has an <code>h2</code> title in the original source.
+              </p>
+              <section>
+                <h2>Russian Turtles</h2>
+                <p>
+                  This section has an <code>h2</code> title in the original source.
+                </p>
+              </section>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
 
-<body>
-  <a href="http://github.com/sideshowbarker/console-object"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/sideshowbarker/console-object/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/sideshowbarker/console-object/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/sideshowbarker/console-object">console-object</a>
-      <span class="small">by <a href="http://github.com/sideshowbarker">sideshowbarker</a></span></h1>
-
-    <div class="description">
-      specification for the browser console object
-    </div>
-
-    <h2>Contact</h2>
-<p>Michael(tm) Smith (mike@w3.org)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/sideshowbarker/console-object/zipball/master">zip</a> or
-      <a href="http://github.com/sideshowbarker/console-object/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/sideshowbarker/console-object</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/sideshowbarker/console-object">sideshowbarker/console-object</a>
-    </div>
-
-  </div>
-
-  
-</body>
+    <section class='appendix'>
+      <h2>Acknowledgements</h2>
+      <p>
+        Many thanks to Marcos Cáceres for moral support, and to Bert Bos and Geoffrey Sneddon for their
+        tools from which I pilfered joyfully.
+      </p>
+    </section>
+  </body>
 </html>
