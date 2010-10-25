@@ -29,14 +29,10 @@
                   specStatus: "unofficial",
                   shortName:  "console-api",
                   edDraftURI: "http://sideshowbarker.github.net/console-object",
-                  // previousPublishDate:  "2010-04-22",
-                  // previousMaturity: "FPWD",
                   editors: [
                         {   name:       "Michael(tm) Smith",
                             url:        "http://sideshowbarker.net",
                             mailto:     "mike@w3.org",
-                            // company:    "Vodafone",
-                            // companyURL: "http://vodafone.com/"
                         },
                   ],
                   wgURI:        "http://w3.org/TK",
@@ -66,15 +62,24 @@
       </p>
     </section>
 
-    <section id='conformance'>
-      <p>
-        [more TK…]
-      </p>
-    </section>
-
-    <section class='informative'>
+    <section class='informative' id="introduction">
       <h2>Introduction</h2>
       <p>[TK]</p>
+    </section>
+    
+    <section id="infrastructure">
+    <h2>Common infrastructure</h2>
+    <p>This section defines concepts and terminology used in other parts of
+    this specification.</p>
+      <section id="terminology">
+        <h2>Terminology</h2>
+        <p>[TK]</p>
+      </section>
+      <section id='conformance'>
+        <p>
+          [more TK…]
+        </p>
+      </section>
     </section>
     
     <section>
@@ -82,9 +87,9 @@
       <p>This section defines the <code>console</code> object.</p>
 
       <dl title='interface console' class='idl'>
-        <dt>void log (Object object)</dt>
+        <dt>void log (in Object... object)</dt>
         <dd>
-          Writes a message to the console
+          Outputs log content to the console
         </dd>
         <dt>void debug (Object object)</dt>
         <dd>
@@ -116,7 +121,6 @@
           does not evaluate to <code>true</code>, throws an exception and,
           optionally, writes a message to the console.</li>
         </dd>
-        <dt>
       </dl>
     </section>
     
