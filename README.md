@@ -12,7 +12,7 @@ steps:
   2. Use the GitHub Web UI to [create your own fork of the console-object git
 repository][2] and check it out to make a local console-object workspace.
 
-  3. Make your changes to your copy.
+  3. Make your changes to the `index.html` file in your copy.
 
   4. Add your information (name, url, mailto address, etc.) to the `editors`
 array near the top of the source of the `index.html` file.

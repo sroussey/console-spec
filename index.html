@@ -10,6 +10,7 @@
                 "core/style",
                 "w3c/style",
                 "w3c/headers",
+                "core/webidl",
                 "core/data-transform", // done REALLY early in case the transform ends up needing to include something
                 "core/data-include",
                 "core/inlines",
@@ -18,7 +19,6 @@
                 "w3c/structure",
                 "core/dfn",
                 // these at the end
-                "w3c/unhtml5",
                 "core/remove-respec"
               ], 
               {
@@ -47,8 +47,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This is documentation for the browser <code>console</code> object
-        and its API.
+        This is a specification for the browser <code>console</code> object and its API.
       </p>
     </section>
     <section id='sotd'>
@@ -63,119 +62,63 @@
       </p>
     </section>
 
-    <section>
-      <h2>RFC 2119 is not OPTIONAL</h2>
-      <p>
-        There are several RFC 2119 keywords: MUST, MUST NOT, REQUIRED, SHALL, SHALL
-        NOT, SHOULD, SHOULD NOT, RECOMMENDED,  MAY, and OPTIONAL. They are only recognised in
-        uppercase, so that one may still write normally if one must. Importantly, the MUST
-        NOT fail when happening over line breaks, but:
-      </p>
-      <ul>
-        <li>MUST</li>
-        <li>NOT</li>
-        <li>work over element boundaries.</li>
-      </ul>
-    </section>
-    
-    
     <section class='informative'>
-      <h2>Small Talk about Abbreviations</h2>
-      <p>
-        W3C is no different from other geek outfits, and is therefore full of abbreviations.
-        We don't care about the silly debate going on about <code>abbr</code> and <code>acronym</code>,
-        we just support whatever people use, so that the following all ought to work:
-      </p>
-      <ul>
-        <li><acronym title='Devilishly Awesome Hypertext Über Troll'>DAHUT</acronym> and DAHUT</li>
-        <li><abbr title='abbreviation'>abbr</abbr> and abbr</li>
-        <li><abbr title='seriously'>srsly</abbr> and srsly</li>
-      </ul>
-    </section>
-    
-    
-    <section class='informative'>
-      <h2>A Defining Moment</h2>
-      <p>
-        A <dfn>definition</dfn> is an element that marks out a term that is defined in the current
-        block.
-      </p>
-      <p>
-        They can sometimes be <dfn title='definition with a title'>definitions with a title</dfn> so
-        that they can be written in the flow of the sentence without disruption.
-      </p>
-      <p>
-        Sometimes you will see an <dfn><abbr title='abbreviation-based definition'>AbbrDef</abbr></dfn>, which
-        is an abbreviation-based definition.
-      </p>
-      <p>
-        One thing that should definitely work is creating <dfn>definitions
-          over
-        multiple
-            lines</dfn> in the source.
-      </p>
-      <p>
-        It is then possible to reuse them. The title trick works both ways so that <a title='definition'>definitions</a>
-        can be reused fluidly. It would be possible to automatically detect them but for the time being
-        they require an <code>a</code> element.
-      </p>
-      <p>
-        This should have no problem mixing up with <code>abbr</code> as <a title='abbreviation-based definition'>AbbrDef</a> shows, and a <a>definition
-        with a title</a> works over several lines, just like <a>definitions over multiple lines</a>.
-      </p>
+      <h2>Introduction</h2>
+      <p>TK</p>
     </section>
     
     <section>
-      <h2>A Good Reference</h2>
-      <p>
-        One can trivially make references to any specification, say for instance [[WIDGETS]], [[WICD]],
-        and even in a normative way [[!REX]] or [[!SVGMOBILE12]]. It's all about I18N, [[ZHMARK]].
-      </p>
-    </section>
-    
-    <section>
-      <h2>Russian Turtles</h2>
-      <p>
-        This section has an <code>h2</code> title in the original source.
-      </p>
-      <section>
-        <h2>Russian Turtles</h2>
-        <p>
-          This section has an <code>h2</code> title in the original source.
-        </p>
-        <section>
-          <h2>Russian Turtles</h2>
-          <p>
-            This section has an <code>h2</code> title in the original source.
-          </p>
-          <section>
-            <h2>Russian Turtles</h2>
-            <p>
-              This section has an <code>h2</code> title in the original source.
-            </p>
-            <section>
-              <h2>Russian Turtles</h2>
-              <p>
-                This section has an <code>h2</code> title in the original source.
-              </p>
-              <section>
-                <h2>Russian Turtles</h2>
-                <p>
-                  This section has an <code>h2</code> title in the original source.
-                </p>
-              </section>
-            </section>
-          </section>
-        </section>
-      </section>
-    </section>
+      <h2>The console object</h2>
+      <p>This section defines the <code>console</code> object.</p>
 
+      <dl title='interface console' class='idl'>
+        <dt>void log (Object object)</dt>
+        <dd>
+          Writes a message to the console
+        </dd>
+        <dt>void debug (Object object)</dt>
+        <dd>
+          Writes a message to the console,
+          along with the line number for the line where it was called.
+        </dd>
+        <dt>void info (Object object)</dt>
+        <dd>
+          Writes a message to the console, with a flag of some kind to
+          indicate that it is an informational message,
+          along with the line number for the line where it was called.
+        </dd>
+        <dt>void warn (Object object)</dt>
+        <dd>
+          Writes a message to the console, with a flag of some kind to
+          indicate that it is a warning message,
+          along with the line number for the line where it was called.
+        </dd>
+        <dt>void error (Object object)</dt>
+        <dd>
+          Writes a message to the console, with a flag of some kind to
+          indicate that it is an error message,
+          along with the line number for the line where it was called.
+        </dd>
+        <dt>void assert (boolean expression, optional Object object)</dt>
+        <dd>
+          <ol>
+            <li>Tests whether the <code>expression</code> argument
+            evaluates to <code>true</code>.</li>
+            <li>If the <code>expression</code> argument does not evaluate
+            to <code>true</code>:
+              <ol>
+                <li>Throws an exception.</li>
+                <li>Optionally, writes a message to the console.</li>
+              </ol>
+            </li>
+          </ol>
+        </dd>
+      </dl>
+    </section>
+    
     <section class='appendix'>
       <h2>Acknowledgements</h2>
-      <p>
-        Many thanks to Marcos Cáceres for moral support, and to Bert Bos and Geoffrey Sneddon for their
-        tools from which I pilfered joyfully.
-      </p>
+      <p>TK</p>
     </section>
   </body>
 </html>
