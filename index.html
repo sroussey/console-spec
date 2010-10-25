@@ -75,7 +75,7 @@
         <h2>Terminology</h2>
         <dl>
         <dt><dfn>log content</dfn></dt>
-          <dd>[any Javascript object, any number of times; but if first arg
+          <dd>[any number of Javascript objects of any type; but if first arg
           is printf-like string, uses remaining args to construct formatted
           string from that]</dd>
         </dl>
@@ -92,24 +92,23 @@
       <p>This section defines the <code>console</code> object.</p>
 
       <dl title='interface console' class='idl'>
-        <dt>void log (in any?... args)</dt>
+        <dt>void log (in any... args)</dt>
         <dd>
           Outputs
-           <a>log content</a>
+           <a>log content</a> <var>args</var>
           to the console
         </dd>
         <dt>void debug (in any... args)</dt>
         <dd>
-          Writes a message to the console,
           Outputs
-           <a>log content</a>
+           <a>log content</a> <var>args</var>
           to the console,
           along with the line number for the line where it was called.
         </dd>
         <dt>void info (in any... args)</dt>
         <dd>
           Outputs
-           <a>log content</a>
+           <a>log content</a> <var>args</var>
           to the console,
           with a flag of some kind to
           indicate that it is an informational message,
@@ -118,7 +117,7 @@
         <dt>void warn (in any... args)</dt>
         <dd>
           Outputs
-           <a>log content</a>
+           <a>log content</a> <var>args</var>
           to the console,
           with a flag of some kind to
           indicate that it is a warning message,
@@ -127,7 +126,7 @@
         <dt>void error (in any... args)</dt>
         <dd>
           Outputs
-           <a>log content</a>
+           <a>log content</a> <var>args</var>
           to the console,
           with a flag of some kind to
           indicate that it is an error message,
@@ -135,11 +134,10 @@
         </dd>
         <dt>void assert (boolean expression, in any... args)</dt>
         <dd>
-          Tests whether the <var>expression</var> argument evaluates to
-          <code>true</code>; and, if the <var>expression</var> argument
-          does not evaluate to <code>true</code>, throws an exception and,
-          optionally, outputs
-           <a>log content</a>
+          Tests whether the boolean <var>expression</var> argument evaluates to
+          <code>true</code>; and, if <var>expression</var> does not evaluate to
+          <code>true</code>, throws an exception and, optionally, outputs
+           <a>log content</a> <var>args</var>
           to the console.</dd>
         </dd>
       </dl>
