@@ -5,6 +5,10 @@
     <meta charset='utf-8'>
     <script src='./respec/js/respec2.js' class='remove'></script>
     <script class='remove'>
+    function getLastModifiedDate() {
+      var d = new Date(document.lastModified);
+      return d.toISOString().substring(0,10);
+    }
       respec2([
                 "core/default-root-attr",
                 "core/style",
@@ -39,7 +43,8 @@
                   wg:           "Web Developer Tools Working Group",
                   wgPublicList: "wdt",
                   wgPatentURI:  "http://w3.org/TK",
-                  additionalCopyrightHolders: "Michael(tm) Smith"
+                  additionalCopyrightHolders: "Michael(tm) Smith",
+                  publishDate: getLastModifiedDate()
               }
       );
     </script>
@@ -111,12 +116,16 @@
           does not evaluate to <code>true</code>, throws an exception and,
           optionally, writes a message to the console.</li>
         </dd>
+        <dt>
       </dl>
     </section>
     
     <section class='appendix'>
       <h2>Acknowledgements</h2>
-      <p>TK</p>
+      <p>This document incorporates modified and verbatim content from the
+      <a href="http://getfirebug.com/wiki/index.php/Console_API">Console API</a>
+      page of the
+      <a href="http://getfirebug.com/wiki/index.php/Main_Page">Firebug Wiki</a>.</p>
     </section>
   </body>
 </html>
