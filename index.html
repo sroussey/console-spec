@@ -32,7 +32,7 @@
                   editors: [
                         {   name:       "Michael(tm) Smith",
                             url:        "http://sideshowbarker.net",
-                            mailto:     "mike@w3.org",
+                            mailto:     "mike@w3.org"
                         },
                   ],
                   wgURI:        "http://w3.org/TK",
@@ -73,7 +73,12 @@
     this specification.</p>
       <section id="terminology">
         <h2>Terminology</h2>
-        <p>[TK]</p>
+        <dl>
+        <dt><dfn>log content</dfn></dt>
+          <dd>[any Javascript object, any number of times; but if first arg
+          is printf-like string, uses remaining args to construct formatted
+          string from that]</dd>
+        </dl>
       </section>
       <section id='conformance'>
         <p>
@@ -87,39 +92,55 @@
       <p>This section defines the <code>console</code> object.</p>
 
       <dl title='interface console' class='idl'>
-        <dt>void log (in Object... object)</dt>
+        <dt>void log (in any?... args)</dt>
         <dd>
-          Outputs log content to the console
+          Outputs
+           <a>log content</a>
+          to the console
         </dd>
-        <dt>void debug (Object object)</dt>
+        <dt>void debug (in any... args)</dt>
         <dd>
           Writes a message to the console,
+          Outputs
+           <a>log content</a>
+          to the console,
           along with the line number for the line where it was called.
         </dd>
-        <dt>void info (Object object)</dt>
+        <dt>void info (in any... args)</dt>
         <dd>
-          Writes a message to the console, with a flag of some kind to
+          Outputs
+           <a>log content</a>
+          to the console,
+          with a flag of some kind to
           indicate that it is an informational message,
           along with the line number for the line where it was called.
         </dd>
-        <dt>void warn (Object object)</dt>
+        <dt>void warn (in any... args)</dt>
         <dd>
-          Writes a message to the console, with a flag of some kind to
+          Outputs
+           <a>log content</a>
+          to the console,
+          with a flag of some kind to
           indicate that it is a warning message,
           along with the line number for the line where it was called.
         </dd>
-        <dt>void error (Object object)</dt>
+        <dt>void error (in any... args)</dt>
         <dd>
-          Writes a message to the console, with a flag of some kind to
+          Outputs
+           <a>log content</a>
+          to the console,
+          with a flag of some kind to
           indicate that it is an error message,
           along with the line number for the line where it was called.
         </dd>
-        <dt>void assert (boolean expression, optional Object object)</dt>
+        <dt>void assert (boolean expression, in any... args)</dt>
         <dd>
           Tests whether the <var>expression</var> argument evaluates to
           <code>true</code>; and, if the <var>expression</var> argument
           does not evaluate to <code>true</code>, throws an exception and,
-          optionally, writes a message to the console.</li>
+          optionally, outputs
+           <a>log content</a>
+          to the console.</dd>
         </dd>
       </dl>
     </section>
