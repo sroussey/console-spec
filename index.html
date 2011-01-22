@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Console API</title>
+    <title>Console</title>
     <meta charset='utf-8'>
     <script src='./respec/js/respec2.js' class='remove'></script>
     <script class='remove'>
@@ -48,12 +48,13 @@
   <body>
     <section id='abstract'>
       <p>
-        The Console Interface represents a means for programatically
-        writing output to consoles such as the console environments
-        included as part of Web-developer toolsuites in Web browsers, and
-        shell environments available for various scripting languages.</p>
+        The <code>Console</code> interface defined in this specification
+        represents a means for programatically writing messages, data, and
+        other output to a console such as a standalone shell environment
+        for a scripting language, or the console component of Web-developer
+        toolsuite in a Web browser.</p>
       </p>
-      <p>
+      <p class="note">
         Additional editorial contributions to this document are welcome.
         For details on how to contribute, see the
         <a href="./README.html#contributing">instructions in the accompanying README file</a>.
@@ -65,11 +66,74 @@
       </p>
     </section>
 
-    <section class='informative' id="introduction">
-      <h2>Introduction</h2>
-      <p>[TK]</p>
+    <section class='informative' id="background">
+      <h2>Background and scope</h2>
+      <p>Conceptually, a
+      <dfn id="console-term" title="console-term">console</dfn>
+      is a particular kind of “window”
+      to which output may be written and recorded and from which that
+      output may subsequently be displayed or otherwise accessed (for
+      example, through non-visual mechanisms such as accessibility
+      technology software that makes the information from the console
+      available aurally).</p>
+
+      <p>Consoles are commonly used by developers while testing and
+      debugging their programs and scripts, in the following way:</p>
+
+      <ul>
+         <li>the code for a program or script invokes methods that cause
+         “payloads” to be sent to a console, along with metadata about
+         those payloads</li>
+         <li>a payload can be a debugging message, data such as the values
+         of particular variables, and even entire objects</li>
+         <li>payload metadata can include propertys of some kind that
+         indicate conditions the payload is associated with; for
+         example, metadata that indicates an error condition or a warning
+         condition</li>
+         <li>the console displays the payload, perhaps even (in the case of
+         object payloads) rendering it in a way that allows it to be
+         interactively examined in the console (for example, by providing a
+         collapsible tree view of the object)</li>
+         <li>additionally, the console can use the payload metadata to
+         supplement the display of the payload itself; for example, for a
+         payload associated with an error condition, the console can
+         prepend the string “<code>Error</code>” or an error icon to its
+         rendering of the payload</li>
+      </ul>
+
+      <p>Examples of specific classes of console implementations that
+      provide a mechanism like the one described above include:</p>
+
+      <ul>
+       <li>the console components of Web-developer toolsuites in Web
+       browsers</li>
+       <li>standalone shell environments for scripting languages</li>
+      </ul>
+
+      <p>This specification is intended to provide a language-neutral
+      console model inspired by, and compatible with, the JavaScript
+      <code>window.console</code> object that first appeared as part of the
+      <a href="http://http://getfirebug.com/">Firebug</a> plugin for
+      Mozilla Firefox and that has subsequently been implemented in other
+      major browsers, as well as in so-called “server side” JavaScript
+      environments such as <a href="http://nodejs.org">node</a>.</p>
+
+      <p>The scope of this specification is thus limited to:</p>
+
+      <ul>
+        <li>a definition of an abstract
+        <a><code>Console</code></a>
+        interface for programatically writing output
+        <a title="payload">payloads</a>
+        to such consoles</li>
+
+        <li>a specification of the behavior that conforming console
+        implementations must follow to process such
+        <a><code>Console</code></a>
+        <a title="payload">payloads</a></li>
+      </ul>
     </section>
-    
+
     <section id="infrastructure">
     <h2>Common infrastructure</h2>
     <p>This section defines concepts and terminology used in other parts of
@@ -77,75 +141,202 @@
       <section id="terminology">
         <h2>Terminology</h2>
         <dl>
-        <dt><dfn>log content</dfn></dt>
-          <dd>[any number of Javascript objects of any type; but if first arg
-          is printf-like string, uses remaining args to construct formatted
-          string from that]</dd>
+          <dt><dfn id="" title="">…</dfn></dt>
+          <dd>…</dd>
         </dl>
       </section>
       <section id='conformance'>
         <p>
-          [more TK…]
+          This specification defines a single conformance class: a
+          <i>conforming console implementation</i>.</p>
+        <p>
+          A <dfn id="console-implementation" title="console implementation">console implementation</dfn>
+          is any environment to which 
+          <a><code>Console</code></a>
+          <a title="payload">payloads</a>
+          can be written according to the definitions and requirements
+          provided in this specification.</p>
+          <p>A <dfn id="conforming-console-implementation" title="conforming console implementation">conforming console implementation</dfn>
+          is any
+          <a>console implementation</a>
+          that conforms to the definitions and requirements provided in
+          this specification.</p>
+          <p><a title="conforming console implementation">Conforming console implementations</a>
+          MUST:</p>
+          <ul>
+            <li>expose a
+            <a><code>Console</code></a>
+            interface as defined in this specification</li>
+            <li>process
+            <a title="payload">payloads</a>
+            according to the requirements given in this specification</li>
+          </ul>
         </p>
       </section>
     </section>
-    
-    <section>
-      <h2>The console object</h2>
-      <p>This section defines the <code>console</code> object.</p>
 
-      <dl title='interface console' class='idl'>
+    <section id="the-console-interface">
+      <h2>The Console interface</h2>
+      <p>This section defines the <a><code>Console</code></a> interface.
+        The <a><code>Console</code><a> interface
+        represents a means for programatically writing output
+        <a title="payload">payloads</a>
+        to a
+        <a title="console-term">console</a>.</p>
+
+      <dl title='interface Console' class='idl'>
         <dt>void log (in any... args)</dt>
         <dd>
-          Outputs
-           <a>log content</a> <var>args</var>
-          to the console
+          <a title="send a payload">Sends a payload</a>
+          <var>args</var>
+          to the console.
         </dd>
         <dt>void debug (in any... args)</dt>
         <dd>
-          Outputs
-           <a>log content</a> <var>args</var>
+          <a title="send a payload">Sends a payload</a>
+          <var>args</var>
           to the console,
-          along with the line number for the line where it was called.
+          along with the source-code line number from which the method was called.
         </dd>
         <dt>void info (in any... args)</dt>
         <dd>
-          Outputs
-           <a>log content</a> <var>args</var>
-          to the console,
-          with a flag of some kind to
-          indicate that it is an informational message,
-          along with the line number for the line where it was called.
+          <a title="send a payload">Sends a payload</a>
+          <var>args</var>
+          to the console, with the
+          value of its
+          <a><code>Severity</code></a>
+          property set to
+          <i>Info</i>,
+          and the value of its
+          <a><code>LineNumber</code></a>
+          property set to the source-code line number from which the method
+          was called.
         </dd>
         <dt>void warn (in any... args)</dt>
         <dd>
-          Outputs
-           <a>log content</a> <var>args</var>
-          to the console,
-          with a flag of some kind to
-          indicate that it is a warning message,
-          along with the line number for the line where it was called.
+          <a title="send a payload">Sends a payload</a>
+          <var>args</var>
+          to the console, with the
+          value of its
+          <a><code>Severity</code></a>
+          property set to
+          <i>Warning</i>,
+          and the value of its
+          <a><code>LineNumber</code></a>
+          property set to the source-code line number from which the method
+          was called.
         </dd>
         <dt>void error (in any... args)</dt>
         <dd>
-          Outputs
-           <a>log content</a> <var>args</var>
-          to the console,
-          with a flag of some kind to
-          indicate that it is an error message,
-          along with the line number for the line where it was called.
+          <a title="send a payload">Sends a payload</a>
+          <var>args</var>
+          to the console, with the
+          value of its
+          <a><code>Severity</code></a>
+          property set to
+          <i>Error</i>,
+          and the value of its
+          <a><code>LineNumber</code></a>
+          property set to the source-code line number from which the method
+          was called.
         </dd>
         <dt>void assert (boolean expression, in any... args)</dt>
         <dd>
           Tests whether the boolean <var>expression</var> argument evaluates to
           <code>true</code>; and, if <var>expression</var> does not evaluate to
-          <code>true</code>, throws an exception and, optionally, outputs
-           <a>log content</a> <var>args</var>
-          to the console.</dd>
+          <code>true</code>,
+          <a title="throw-assertion-failed">throws an <i>assertion failed</i> exception</a>
+          and, optionally,
+          <a title="send a payload">sends a payload</a>
+          <var>args</var>
+          to the console.
         </dd>
       </dl>
     </section>
-    
+    <section id="payload-handling">
+      <h2>Handling payloads</h2>
+      <p>This section specifies how
+      <a>conforming console implementations</a>
+      <a title="send a payload">send payloads</a>
+      and 
+      <a title="process a payload">process payloads</a>.</p>
+      </p>
+
+      <section class="informative" id="payload-properties">
+        <h2>The payload concept</h2>
+        <p>Conceptually, a
+        <dfn id="payload" title="payload">payload</dfn>
+        is a unit of information for output to a console. Examples of the
+        possible contents of a <a>payload</a> include:</p>
+        <ul>
+          <li>a single literal message string</li>
+          <li>a single data item, such as the value of a variable</li>
+          <li>an object</li>
+          <li>any set of literal message strings, data items, and objects</li>
+        </ul>
+      </section>
+      <section id="payload-properties">
+        <h2>The properties of a payload</h2>
+        <p class="informative">A
+        <dfn id="payload" title="payload">payload</dfn>
+        consists of three abstract properties:
+        <ul>
+          <li>a <a><code>PayloadContents</code></a> property</li>
+          <li>a <a><code>LineNumber</code></a> property</li>
+          <li>a <a><code>Severity</code></a> property</li>
+        </ul>
+        <section id="payload-contents">
+          <h2>Payload contents</h2>
+          <p>The <dfn id="PayloadContents" title="PayloadContents"><code>PayloadContents</code></dfn>
+          property is an abstraction used here for specification purposes
+          only, and need not correspond to any specific entity within an
+          implementation of this specification.
+          The value of the <a><code>PayloadContents</code></a> property
+          is the actual content of the <a>payload</a></p>
+        </section>
+        <section id="line-number">
+          <h2>Line number</h2>
+          <p>The <dfn id="LineNumber" title="LineNumber"><code>LineNumber</code></dfn>
+          property is an abstraction used here for specification purposes
+          only, and need not correspond to any specific entity within an
+          implementation of this specification.
+          The value of the <a><code>LineNumber</code></a> property
+          is a source-code line number with which to associate a
+          <a>payload</a>. …</p>
+        </section>
+        <section id="severity-level">
+          <h2>Severity level</h2>
+          <p>The <dfn id="Severity" title="Severity"><code>Severity</code></dfn>
+          property is an abstraction used here for specification purposes
+          only, and need not correspond to any specific entity within an
+          implementation of this specification.
+          The value of the <a>Severity</a> property
+          is an indicator of the severity level of a
+          <a>payload</a>. There are three possible severity levels:</p>
+          <ul>
+            <li><i>Error</i></li>
+            <li><i>Warning</i></li>
+            <li><i>Info</i></li>
+          </ul>
+        </section>
+      </section>
+      <section id="sending-payloads">
+        <h2>Sending payloads</h2>
+        <p>To <dfn id="send-a-payload" title="send a payload">send a payload</dfn>,
+        a <a>conforming console implementation</a> MUST follow these steps: …</p>
+      </section>
+      <section id="processing-payloads">
+        <h2>Processing payloads</h2>
+        <p>To <dfn id="process-a-payload" title="process a payload">process a payload</dfn>,
+        a <a>conforming console implementation</a> MUST follow these steps: …</p>
+      </section>
+      <section id="assertion-failed-exception">
+        <h2>Throwing an <i>assertion failed</i> exception</h2>
+        <p>To
+        <dfn id="throw-assertion-failed" title="throw-assertion-failed">throw an <i>assertion failed</i> exception</dfn>,
+        a <a>conforming console implementation</a> MUST….</p>
+      </section>
+    </section>
     <section class='appendix'>
       <h2>Acknowledgements</h2>
       <p>This document incorporates modified and verbatim content from the
