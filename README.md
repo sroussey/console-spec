@@ -1,6 +1,7 @@
 # The console API
 
-This repo holds a draft specification for the browser `console` object.
+This repo holds a draft specification for the `console` interface (JavaScript
+object).
 
 ## How to contribute to this specification
 
@@ -9,8 +10,8 @@ steps:
 
   1. If you don’t have one already, create a [GitHub user account][1].
 
-  2. Use the GitHub Web UI to [create your own fork of the console-object git
-repository][2] and check it out to make a local console-object workspace.
+  2. Use the GitHub Web UI to [create your own fork of the console-spec git
+repository][2] and check it out to make a local console-spec workspace.
 
   3. Make your changes to the `index.html` file in your copy.
 
@@ -23,14 +24,14 @@ near the top of the `index.html` file.  Note that by adding your name to the
 contributions available under the terms of the MIT license.
 
   6. Commit the updated `index.html` file to your local git repository, then
-push it to your GitHub console-object fork.
+push it to your GitHub console-spec fork.
 
-  7. Send a [GitHub console-object pull request][3] so that your change can be
+  7. Send a [GitHub console-spec pull request][3] so that your change can be
 committed into the upstream source.
 
    [1]: https://github.com/signup/free
 
-   [2]: http://github.com/sideshowbarker/console-object#fork_box
+   [2]: http://github.com/sideshowbarker/console-spec#fork_box
 
-   [3]: http://github.com/sideshowbarker/console-object/pulls
+   [3]: http://github.com/sideshowbarker/console-spec/pulls
 
