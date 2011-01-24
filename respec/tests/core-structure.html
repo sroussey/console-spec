@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Core Structure: references and table</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/structure"],
+        {},
+        function (struct) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            var doc;
+            
+            $.fn.makeID = function (pfx, txt) {
+                // doesn't work like a real jq plugin
+                var $el = $(this, this.context.documentElement);
+                if ($el.attr("id")) return $el.attr("id");
+                var id = pfx + "-" + txt;
+                $el.attr("id", id);
+                return id;
+            }
+            
+            module("References");
+            test("Sets empty anchor reference from section number and title", function () {
+                var doc = makeDoc("", "<section id='foo'><h2>title</h2><a href='#foo'></a></section>");
+                var root = doc.documentElement;
+                stop(1000);
+                struct.run({}, doc, function () {
+                    var a = $(root).find('a');
+                    ok($(a).children("span.secno-ref"), "has secno-ref span");
+                    equals($(a).text(), "1. title", "Adds section number and title");
+                    equals($(a).attr('class'), "sec-ref", "adds sec-ref to anchor")
+                    equals($(a).children("span.secno").text(), "1", "Adds section number");
+                    equals($(a).children("span.sec-title").text(), "title", "Adds sec title");
+                    start();
+                });
+            });
+
+            test("Does not set content for non-empty anchor", function () {
+                var doc = makeDoc("", "<section id='foo'><h2>title</h2><a href='#foo'>bar</a></section>");
+                var root = doc.documentElement;
+                stop(1000);
+                struct.run({}, doc, function () {
+                    var a = $(root).find('a');
+                    equals($(a).html(), "bar", "does not add section number");
+                    equals($(a).attr('class'), "sec-ref", "adds sec-ref to anchor")
+                    start();
+                });
+            });
+            
+            module("Table of Contents");
+            test("Creates Table of Contents", function () {
+                var doc = makeDoc("", "<section id='foo'><h2>title</h2></section>");
+                var root = doc.documentElement;
+                stop(1000);
+                struct.run({}, doc, function () {
+                    var h = $(root);
+                    var toc = $(root).find('section#toc');
+                    equals($(toc).children('h2.introductory').text(), "Table of Contents", "adds TOC title");
+                    ok($(toc).find('ul'), "has list");
+                    equals($(toc).find('ul>li').size(), 1, "has one entry");
+                    var li = $(toc).find('ul>li');
+                    equals($(li).text(), "1. title", "has title");
+                    ok($(li).children().is("a"), "has anchor");
+                    equals($(li).children("a").attr("href"), "#sec-title", "references section")
+                    start();
+                });
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

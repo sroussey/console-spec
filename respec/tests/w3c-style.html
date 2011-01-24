@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>W3C Style</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["w3c/style"],
+        {},
+        function (css) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            module("Styling");
+            test("Inject the right style", function () {
+                var tests = [
+                    { s: "WD",          h: "http://www.w3.org/StyleSheets/TR/W3C-WD.css" },
+                    { s: "LC",          h: "http://www.w3.org/StyleSheets/TR/W3C-WD.css" },
+                    { s: "base",        h: "http://www.w3.org/StyleSheets/TR/base" },
+                    { s: "unofficial",  h: "http://www.w3.org/StyleSheets/TR/w3c-unofficial" },
+                ];
+                expect(tests.length);
+                var funcs = [];
+                for (var i = 0, n = tests.length; i < n; i++) {
+                    (function (s, h) {
+                        funcs.push(function () {
+                            var doc = makeDoc("", "");
+                            stop(1000);
+                            css.run({ specStatus: s }, doc, function () {
+                                equals($("link[rel='stylesheet']", doc).attr("href"), h, "W3C CSS for " + s);
+                                start();
+                                if (funcs.length) (funcs.shift())();
+                            });
+                        });
+                    })(tests[i].s, tests[i].h);
+                }
+                (funcs.shift())();
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

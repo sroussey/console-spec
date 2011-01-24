@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Data Transforms</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+        function hilight(r, content) {
+          return '<em>' +content+ '</em>' ;
+        }
+    </script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/data-transform"],
+        {},
+        function (dt) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            module("Data Transform");
+            test("Transforms element", function () {
+                var doc = makeDoc("", "<span id='foo' data-transform='hilight'>text</span>");
+                var span = doc.getElementById('foo');
+                stop(1000);
+                dt.run({}, doc, function () {
+                    ok(!span.hasAttribute("data-transform"), "does not have data-transform anymore");
+                    ok($(span).find("em"), "Has an em child")
+                    equals($(span).text(), "text", "transform content");
+                    start();
+                });
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

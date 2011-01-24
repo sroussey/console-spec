@@ -1,0 +1,13 @@
+
+The architecture being experimented with here is essentially to design ReSpec as 
+a thin layer on top of a dynamic loader. Each piece of functionality becomes a
+small and self-contained plugin. Some plugins can call upon others, so that for
+instance the W3C plugin would be the only one one needs to load for a W3C document
+and it would take responsibility for calling in the others (different groups could
+have their own refined versions of this, naturally).
+
+This is built with RequireJS and jQuery.
+
+This approach also makes it possible to reuse ReSpec in non-W3C settings, as well
+as to optimise its running time by excluding plugins one doesn't need.
+

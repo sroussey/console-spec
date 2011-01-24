@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Core Figure captions, references and table</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/figure"],
+        {},
+        function (fg) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            var doc;
+            
+            $.fn.makeID = function (pfx, txt) {
+                // doesn't work like a real jq plugin
+                var $el = $(this, this.context.documentElement);
+                if ($el.attr("id")) return $el.attr("id");
+                var id = pfx + "-" + txt;
+                $el.attr("id", id);
+                return id;
+            }
+            
+            module("Captions");
+            test("Adds caption after non-image", function () {
+                var doc = makeDoc("", "<span class='figure' title='title'></span>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var cap = $(root).find("p.caption");
+                    ok(cap, "contains caption");
+                    var figno = $(cap).find("span.figno");
+                    equals(figno.text(), "1", "Figure number");
+                    equals(cap.text(), "1title", "Figure number with title");
+                    start();
+                });
+            });
+
+            test("Wraps image in div and appends caption", function () {
+                var doc = makeDoc("", "<img class='figure' href='foo.jpg' alt='title'/>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var div = $(root).children('div.figure');
+                    ok($(div), "contains div");
+                    ok($(div).children("img.figure"), "div contains image");
+                    ok($(div).children("p.caption"), "div contains caption");
+                    start();
+                });
+            });
+            
+            test("Appends caption to div", function () {
+                var doc = makeDoc("", "<div class='figure'><img href='foo.jpg' alt='title'/></div>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var div = $(root).children('div.figure');
+                    ok($(div), "contains div");
+                    ok($(div).children("p.caption"), "div contains caption");
+                    start();
+                });
+            });
+
+            test("Assigns id", function () {
+                var doc = makeDoc("", "<span class='figure' title='title'></span>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var span = $(root).children("span");
+                    equals(span.attr("id"), "fig-title", "id is fig-title");
+                    start();
+                });
+            });
+
+            module("References");
+            test("Sets empty anchor reference from figure number and title", function () {
+                var doc = makeDoc("", "<span id='fig-title' class='figure' title='title'></span><a href='#fig-title'></a>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var a = $(root).find('a');
+                    ok($(a).children("span.figno-ref"), "has figno-ref span");
+                    equals($(a).text(), "1title", "Adds figure number and title");
+                    equals($(a).attr('class'), "fig-ref", "adds fig-ref to anchor")
+                    equals($(a).children("span.figno").text(), "1", "Adds figure number");
+                    equals($(a).children("span.fig-title").text(), "title", "Adds figure title");
+                    start();
+                });
+            });
+
+            test("Does not set content for non-empty anchor", function () {
+                var doc = makeDoc("", "<span id='fig-title' class='figure' title='title'></span><a href='#fig-title'>bar</a>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var a = $(root).find('a');
+                    equals($(a).html(), "bar", "does not add figure number");
+                    equals($(a).attr('class'), "fig-ref", "adds fig-ref to anchor")
+                    start();
+                });
+            });
+            
+            module("Table of Figures");
+            test("Creates Table of Figures", function () {
+                var doc = makeDoc("", "<section id='tof'></section><span id='fig-title' class='figure' title='title'></span><a href='#fig-title'>bar</a>");
+                var root = doc.documentElement;
+                stop(1000);
+                fg.run({}, doc, function () {
+                    var h = $(root);
+                    var tof = $(root).find('section#tof');
+                    equals($(tof).children('h2.introductory').text(), "Table of Figures", "adds TOF title");
+                    ok($(tof).find('ol'), "has list");
+                    equals($(tof).find('ol>li').size(), 1, "has one entry");
+                    var li = $(tof).find('ol>li');
+                    equals($(li).text(), "1title", "has title");
+                    ok($(li).children().is("a"), "has anchor");
+                    equals($(li).children("a").attr("href"), "#fig-title", "references figure")
+                    start();
+                });
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

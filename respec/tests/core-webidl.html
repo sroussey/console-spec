@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Core Defaulting Root Attributes</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+        function hilight(r, content) {
+          return '<em>' +content+ '</em>' ;
+        }
+    </script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/webidl"],
+        {},
+        function (wi) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            module("Interfaces");
+            test("Interfaces", function () {
+              var tests = [
+                  { s: "Simplest",            h: "<dl title='interface Dahut1' class='idl'></dl>" },
+                  { s: "Inheritance",         h: "<dl title='interface Dahut2 : Cryptoid' class='idl'></dl>" },
+                  { s: "Multiple Inheritance",h: "<dl title='interface Dahut3 : Cryptoid, Mammal' class='idl'></dl>" },
+                  { s: "Extended Attribute",  h: "<dl title='[Constructor] interface Dahut4' class='idl'></dl>" },
+                  { s: "Everything",          h: "<dl title='[Constructor] interface Dahut5 : Cryptoid, Mammal' class='idl'></dl>" },
+              ];
+              expect(tests.length);
+              var funcs = [];
+              for (var i = 0, n = tests.length; i < n; i++) {
+                  (function (s, h) {
+                      funcs.push(function () {
+                          var doc = makeDoc("", h);
+                          stop(1000);
+                          wi.run({ respecBase: "../" }, doc, function () {
+                            ok($("pre.idl>spen.idlInterface", doc).text())
+                              equals($("link[rel='stylesheet']", doc).attr("href"), h, "W3C CSS for " + s);
+                              start();
+                              if (funcs.length) (funcs.shift())();
+                          });
+                      });
+                  })(tests[i].s, tests[i].h);
+              }
+              (funcs.shift())();
+            });
+
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Core Defaulting Root Attributes</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+        function hilight(r, content) {
+          return '<em>' +content+ '</em>' ;
+        }
+    </script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/data-include"],
+        {},
+        function (di) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            module("Data Include");
+            test("Includes file", function () {
+                var doc = makeDoc("", "<span id='foo' data-include='foo.html'></span>");
+                var span = doc.getElementById('foo');
+                // Proxy get
+                di.proxyLoad = function(src, cb) {
+                    equals(src, "foo.html", "Callback called with source")
+                    cb("got");
+                };
+                stop(1000);
+                di.run({}, doc, function () {
+                    expect(3);
+                    ok(!span.hasAttribute("data-include"), "does not have data-include anymore");
+                    equals($(span).text(), "got", "included content");
+                    start();
+                });
+            });
+
+            test("Recursively includes file", function () {
+                var doc = makeDoc("", "<span id='foo' data-include='foo.html'></span>");
+                var span = doc.getElementById('foo');
+                // Proxy get
+                di.proxyLoad = function(src, cb) {
+                    if (src == "foo.html") {
+                        ok(true, "Got 'foo.html'")
+                        cb("<div data-include='bar.html'></div>");
+                    } else if (src == "bar.html") {
+                        ok(true, "Got 'bar.html'")
+                        cb("got");
+                    } else {
+                        ok(false, "expected 'foo.html' or 'bar.html' got '" + src + "'");
+                    }
+                };
+                stop(1000);
+                di.run({}, doc, function () {
+                    expect(5);
+                    ok(!span.hasAttribute("data-include"), "does not have data-include anymore");
+                    ok($(span).find("div"), "has an div child")
+                    equals($(span).text(), "got", "included content");
+                    start();
+                });
+            });
+
+            test("Runs ondata-include", function () {
+                var doc = makeDoc("", "<span id='foo' data-include='foo.html' data-oninclude='hilight'></span>");
+                var span = doc.getElementById('foo');
+                // Proxy get
+                di.proxyLoad = function(src, cb) {
+                    equals(src, "foo.html", "callback called with source")
+                    cb("text");
+                };
+                stop(1000);
+                di.run({}, doc, function () {
+                    expect(5);
+                    ok(!span.hasAttribute("data-include"), "does not have data-include anymore");
+                    ok(!span.hasAttribute("data-oninclude"), "does not have data-oninclude anymore");
+                    ok($(span).find("em"), "has an em child")
+                    equals($(span).text(), "text", "included content");
+                    start();
+                });
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

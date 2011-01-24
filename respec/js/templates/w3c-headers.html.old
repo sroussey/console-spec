@@ -1,0 +1,182 @@
+
+<!-- 
+  XXX
+    - we will have problems with white space, see as we go
+ -->
+<script type='application/x-simplate' id='w3c-headers'><![CDATA[
+  <div class='head'>
+    <p>
+    [% if (specStatus != "unofficial") { %]
+      <a href='http://www.w3.org/'><img width='72' height='48' src='http://www.w3.org/Icons/w3c_home' alt='W3C'/></a>
+    [% } %]
+    [% if (specStatus === "XGR") { %]
+      <a href='http://www.w3.org/2005/Incubator/XGR/'><img alt='W3C Incubator Report' 
+      src='http://www.w3.org/2005/Incubator/images/XGR' height='48' width='160'/></a>
+    [% } %]
+    </p>
+    <h1 class='title' id='title'>[%= title %]</h1>
+    [% if (subtitle) { %]
+      <h2 id='subtitle'>[%= subtitle %]</h2>
+    [% } %]
+    <h2>[%= specStatus === "unofficial" ? "" : "W3C " %][%= specStatusText %] [%= publishHumanDate %]</h2>
+    <dl>
+      [% if (!isNoTrack) { %]
+        <dt>This Version:</dt><dd>[%= CALL('link-uri', {uri: thisVersion}) %]</dd>
+        <dt>Latest Published Version:</dt><dd>[%= CALL('link-uri', {uri: latestVersion}) %]</dd>
+        [% if (edDraftURI) { %]
+          <dt>Latest Editor&apos;s Draft:</dt><dd>[%= CALL('link-uri', {uri: edDraftURI}) %]</dd>
+        [% }
+      }
+      if (specStatus != 'FPWD' && specStatus != 'ED' && !isNoTrack) {
+        if (!prevED) { %]
+          <dt>Previous version:</dt><dd>[%= CALL('link-uri', {uri: prevVersion}) %]</dd>
+        [% }
+        else { %]
+          <dt>Previous editor&apos;s draft:</dt><dd>[%= CALL('link-uri', {uri: prevED}) %]</dd>
+        [% }
+      }
+      if (prevRecShortname) { %]
+        <dt>Latest Recommendation:</dt><dd>[%= CALL('link-uri', {uri: prevRecURI}) %]</dd>
+      [% } %]
+      [%= CALL('show-people', {name: 'Editor', people: editors}) %]
+      [%= CALL('show-people', {name: 'Author', people: authors}) %]
+    </dl>
+    [% if (errata) { %]
+      <p>Please refer to the <a href='[%= errata %]'>errata</a> for this document, which may include 
+      some normative corrections.</p>
+    [% } %]
+    [%= CALL('alternate-formats', {formats: alternateFormats}) %]
+    [% if (specStatus === "REC") { %]
+      <p>The English version of this specification is the only normative version. Non-normative 
+      <a href='http://www.w3.org/Consortium/Translation/'>translations</a> may also be available.</p>
+    [% } %]
+    <p class='copyright'>
+    [% if (specStatus === "unofficial") { %]
+      [% if (additionalCopyrightHolders) { %]
+        [%= additionalCopyrightHolders %]
+      [% } else { %]
+        This document is licensed under a <a class='subfoot' href='http://creativecommons.org/licenses/by/3.0/' rel='license'>Creative
+        Commons Attribution 3.0 License</a>.
+      [% }
+    } else { %]
+      <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Copyright'>Copyright</a> &copy; 
+      [% if (copyrightStart) { %][%= copyrightStart %]-[% } %][%= publishYear %]
+      [% if (additionalCopyrightHolders) { %] [%= additionalCopyrightHolders %] &amp;[% } %]
+      <a href='http://www.w3.org/'><acronym title='World Wide Web Consortium'>W3C</acronym></a><sup>&reg;</sup>
+      (<a href='http://www.csail.mit.edu/'><acronym title='Massachusetts Institute of Technology'>MIT</acronym></a>,
+      <a href='http://www.ercim.eu/'><acronym title='European Research Consortium for Informatics and Mathematics'>ERCIM</acronym></a>,
+      <a href='http://www.keio.ac.jp/'>Keio</a>), All Rights Reserved.
+      W3C <a href='http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>,
+      <a href='http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a> and
+      <a href='http://www.w3.org/Consortium/Legal/copyright-documents'>document use</a> rules apply.
+    [% } %]
+    </p><hr/></div>
+]]></script>
+
+<script type='application/x-simplate' id='link-uri'><a href='[%= uri %]'>[%= uri %]</a></script>
+
+<script type='application/x-simplate' id='show-people'>
+  [% if (people.length == 0) return ''; %]
+  <dt>[%= name %][% if (people.length > 1) { %]s[% } %]:</dt>
+  [% for (var i = 0, n = people.length; i < n; i++) { var person = people[i]; %]
+      [%= CALL('show-person', person) %]
+  [% } %]
+</script>
+
+<script type='application/x-simplate' id='show-person'>
+  <dd>
+    [% if (url) { %]<a href='[%= url %]'>[%= name %]</a>[% } else { %][%= name %][%}
+    %][% if (company) { %], [% if (companyURL) { %]<a href='[%= companyURL %]'>[%= company %]</a>[% } else { %][%= company %][%}%][%}
+    %][% if (mailto) { %] <a href='mailto:[%= mailto %]'>[%= mailto %]</a>[%}
+    %][% if (note) { %] ([%= note %])[%}%]
+  </dd>
+</script>
+
+<script type='application/x-simplate' id='alternate-formats'>
+  [% if (!formats || formats.length == 0) return ''; %]
+  <p>
+    This document is also available in [%= formats.length == 1 ? "this" : "these" %] non-normative 
+    format[% if (formats.length > 1) { %]s[% } %]: 
+    [% for (var i = 0, n = formats.length; i < n; i++) { var fmt = formats[i]; %]
+      [% if (i > 0) {%][% if (n == 2) {%] [%} else {%], [%}%][% if (i == n-1) {%]and [%}%][%}%]
+      <a href='[%= fmt.uri %]'>[%= fmt.label %]</a>
+    [% } %]    
+  .</p>
+</script>
+
+<script type='application/x-simplate' id='w3c-sotd'><![CDATA[
+  [% if (specStatus === "unofficial") { %]
+    <section id='sotd' class='introductory'><h2>Status of This Document</h2>
+    <p>This document is merely a public working draft of a potential specification. It has
+    no official standing of any kind and does not represent the support or consensus of any 
+    standards organisation.</p></section>
+  [% } else if (isNoTrack) { %]
+    [% var mc = specStatus === "MO" ? "member-confidential " : ""; %]
+    <section id='sotd' class='introductory'><h2>Status of This Document</h2>
+    <p>This document is merely a W3C-internal[%= mc %] document. It has no 
+    official standing of any kind and does not represent consensus of the W3C Membership.</p></section>
+  [% } else { %]
+    [% var art = (specStatus == "ED" || specStatus == "XGR" || specStatus == "IG-NOTE") ? "an" : "a"; %]
+    <section id='sotd' class='introductory'>
+      <h2>Status of This Document</h2>
+      <p><em>This section describes the status of this document at the time of its publication. Other 
+      documents may supersede this document. A list of current W3C publications and the latest revision 
+      of this technical report can be found in the <a href='http://www.w3.org/TR/'>W3C technical reports 
+      index</a> at http://www.w3.org/TR/.</em></p>
+      [% if (custom) { %][%= custom %][% } %]
+      <p>
+        This document was published by the <a href='[%= wgURI %]'>[%= wg %]</a> as [%= art %]
+        [%= longStatus %].
+        [% if (isRecTrack && specStatus != "REC") { %] This document is intended to become a W3C Recommendation.[% } %]
+        If you wish to make comments regarding this document, please send them to 
+        <a href='mailto:[%= wgPublicList %]@w3.org'>[%= wgPublicList %]@w3.org</a> 
+        (<a href='mailto:[%= wgPublicList %]-request@w3.org?subject=subscribe'>subscribe</a>,
+        <a href='http://lists.w3.org/Archives/Public/[%= wgPublicList %]/'>archives</a>).
+        [% if (specStatus === "LC") { %]The Last Call period ends [%= humanLCEnd %].[% } %]
+        [% if (specStatus === "CR") { %]
+          W3C publishes a Candidate Recommendation to indicate that the document is believed to be stable and 
+          to encourage implementation by the developer community. This Candidate Recommendation is expected to 
+          advance to Proposed Recommendation on [%= humanCREnd %].
+        [% } %]
+        All feedback is welcome.
+      </p>
+      [% if (specStatus != "REC") { %]
+        <p>
+          Publication as a [%= longStatus %] does not imply endorsement by the W3C Membership. This is a draft 
+          document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate
+          to cite this document as other than work in progress.
+        </p>
+      [% } %]
+      [% if (specStatus == "LC") { %]
+        <p>
+          This is a Last Call Working Draft and thus the Working Group has determined that this document has satisfied the
+          relevant technical requirements and is sufficiently stable to advance through the Technical Recommendation process.
+        </p>
+      [% } %]
+      <p>
+        This document was produced by a group operating under the 
+        <a href='http://www.w3.org/Consortium/Patent-Policy-20040205/'>5 February 2004 W3C Patent Policy</a>.
+        [% if (!isRecTrack && maturity == "WD") { %]The group does not expect this document to become a W3C Recommendation.[% } %]
+        W3C maintains a <a href='[%= wgPatentURI %]' rel='disclosure'>public list of any patent disclosures</a> 
+        made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An
+        individual who has actual knowledge of a patent which the individual believes contains 
+        <a href='http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential'>Essential Claim(s)</a> must disclose the
+        information in accordance with <a href='http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure'>section 
+        6 of the W3C Patent Policy</a>.
+      </p>
+    </section>
+  [% } %]
+]]></script>
+
+<script type='application/x-simplate' id='w3c-conformance'><![CDATA[
+  <p>
+    As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, 
+    and notes in this specification are non-normative. Everything else in this specification is
+    normative.
+  </p>
+  <p>
+    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY,
+    and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].
+  </p>
+]]></script>
+

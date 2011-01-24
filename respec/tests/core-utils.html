@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Core Utils</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      function cb(utils, input) {
+        return "content";
+      };
+      function cb2(utils, input) {
+        return input + "2";
+      };
+    </script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/utils"],
+        {},
+        function (utils) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            module("Date");
+            var dates = [
+                { y: "2010", m: "01", d: "04" },
+                { y: "1977", m: "03", d: "15" },
+                { y: "2008", m: "02", d: "29" },
+                { y: "9999", m: "12", d: "31" },
+                { y: "1900", m: "01", d: "01" },
+            ];
+            var pDates = []
+            test("Parse and concat simple date", function () {
+                for (var i = 0; i < dates.length; i++) {
+                    var day = dates[i];
+                    var str = day.y + "-" + day.m + "-" + day.d;
+                    var lm = day.m + "/" + day.d + "/" + day.y + " 17:18:25";
+                    var date = utils.parseSimpleDate(str);
+                    equals(date.getFullYear(), day.y, "year for " + str);
+                    equals(date.getMonth() + 1, parseInt(day.m), "month for " + str);
+                    equals(date.getDate(), parseInt(day.d), "day for " + str);
+                    var dateLM = utils.parseLastModified(lm);
+                    equals(dateLM.getFullYear(), day.y, "year for " + str);
+                    equals(dateLM.getMonth() + 1, parseInt(day.m), "month for " + str);
+                    equals(dateLM.getDate(), parseInt(day.d), "day for " + str);
+                    equals(utils.concatDate(date), day.y + day.m + day.d, "concatenation for " + str);
+                    pDates.push(date);
+                }
+            });
+            test("Human date", function () {
+                equals(utils.humanDate(pDates[0]), "04 January 2010", "date 0");
+                equals(utils.humanDate(pDates[1]), "15 March 1977", "date 1");
+                equals(utils.humanDate(pDates[2]), "29 February 2008", "date 2");
+                equals(utils.humanDate(pDates[3]), "31 December 9999", "date 3");
+                equals(utils.humanDate(pDates[4]), "01 January 1900", "date 4");
+            });
+            test("Poor man's sprintf", function () {
+                equals(utils.lead0("a"), "0a", "letter");
+                equals(utils.lead0("3"), "03", "string number");
+                equals(utils.lead0(8), "08", "number");
+                equals(utils.lead0("aa"), "aa", "letters");
+                equals(utils.lead0("33"), "33", "string numbers");
+                equals(utils.lead0(88), "88", "numbers");
+            });
+
+            module("String");
+            test("Escaping", function () {
+                equals(utils.esc("&"), "&amp;", "&");
+                equals(utils.esc(">"), "&gt;", ">");
+                equals(utils.esc("\""), "&quot;", "\"");
+                equals(utils.esc("<"), "&lt;", "<");
+                equals(utils.esc("&>\"<"), "&amp;&gt;&quot;&lt;", "all");
+            });
+            test("Norm", function () {
+                equals(utils.norm("   a"), "a", "leading");
+                equals(utils.norm("a    "), "a", "trailing");
+                equals(utils.norm("a   a"), "a a", "inner");
+                equals(utils.norm("    a   a    "), "a a", "all");
+            });
+
+            module("Style");
+            test("linkCSS", function () {
+                var doc1 = makeDoc("", "");
+                utils.linkCSS(doc1, "dahut.css");
+                equals($("link[rel='stylesheet'][href='dahut.css']", doc1).length, 1, "linking one CSS");
+                var doc2 = makeDoc("", "");
+                utils.linkCSS(doc2, ["dahut.css", "unicorn.css", "chupacabra.css"]);
+                equals($("link[rel='stylesheet']", doc2).length, 3, "linking several CSS");
+            });
+
+            // module("Common pieces");
+            // test("Dependency loading", function () {
+            //     stop(4000);
+            //     $.loadDependencies("../", function () {
+            //         // currently, only templates are loaded
+            //         ok($.simplate.cache["w3c-header"], "templates loading");
+            //         start();
+            //     });
+            // });
+
+            module("Transforms");
+            test("runTransforms", function () {
+              equals(utils.runTransforms("input", ""), "input", "running empty function over input data");
+              equals(utils.runTransforms("input", "cb"), "content", "running single function over input data");
+              equals(utils.runTransforms("input", "cb cb2"), "content2", "running multiple functions over input data");
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

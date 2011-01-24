@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ReSpec v2 — W3C Specification Writing Tool</title>
+    <meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+    <script src='../js/respec2.js' class='remove'></script>
+    <script class='remove'>
+      respec2([
+                "core/default-root-attr",
+                "core/style",
+                "w3c/style",
+                "w3c/headers",
+                "core/data-transform", // done REALLY early in case the transform ends up needing to include something
+                "core/data-include",
+                "core/inlines",
+                "w3c/bibref",
+                "core/structure",
+                "w3c/structure",
+                "core/dfn",
+                // these at the end
+                "w3c/unhtml5",
+                "core/remove-respec"
+              ], 
+              {
+                  specStatus: "WD",
+                  shortName:  "respec2",
+                  edDraftURI: "http://dev.w3.org/respec2/docs/",
+                  previousPublishDate:  "2010-04-22",
+                  previousMaturity: "FPWD",
+                  editors: [
+                        {   name:       "Robin Berjon",
+                            url:        "http://berjon.com/",
+                            company:    "Vodafone",
+                            companyURL: "http://vodafone.com/" },
+                  ],
+                  wgURI:        "http://berjon.com/",
+                  wg:           "Wicked Cool People",
+                  wgPublicList: "spec-prod",
+                  wgPatentURI:  "http://berjon.com/"
+              }
+      );
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This is the documentation for <a title='ReSpec'>ReSpec.js</a>, a tool that helps with specification editing primarily
+        within a W3C context.
+      </p>
+    </section>
+
+
+    <!-- this is crap from the test spec -->
+    <section id='sotd'>
+      <p>
+        This is just a blurb.
+      </p>
+    </section>
+
+    <section id='conformance'>
+      <p>
+        This is another blurb.
+      </p>
+    </section>
+
+    <section>
+      <h2>RFC 2119 is not OPTIONAL</h2>
+      <p>
+        There are several RFC 2119 keywords: MUST, MUST NOT, REQUIRED, SHALL, SHALL
+        NOT, SHOULD, SHOULD NOT, RECOMMENDED,  MAY, and OPTIONAL. They are only recognised in
+        uppercase, so that one may still write normally if one must. Importantly, the MUST
+        NOT fail when happening over line breaks, but:
+      </p>
+      <ul>
+        <li>MUST</li>
+        <li>NOT</li>
+        <li>work over element boundaries.</li>
+      </ul>
+    </section>
+    
+    
+    <section class='informative'>
+      <h2>Small Talk about Abbreviations</h2>
+      <p>
+        W3C is no different from other geek outfits, and is therefore full of abbreviations.
+        We don't care about the silly debate going on about <code>abbr</code> and <code>acronym</code>,
+        we just support whatever people use, so that the following all ought to work:
+      </p>
+      <ul>
+        <li><acronym title='Devilishly Awesome Hypertext Über Troll'>DAHUT</acronym> and DAHUT</li>
+        <li><abbr title='abbreviation'>abbr</abbr> and abbr</li>
+        <li><abbr title='seriously'>srsly</abbr> and srsly</li>
+      </ul>
+    </section>
+    
+    
+    <section class='informative'>
+      <h2>A Defining Moment</h2>
+      <p>
+        A <dfn>definition</dfn> is an element that marks out a term that is defined in the current
+        block.
+      </p>
+      <p>
+        They can sometimes be <dfn title='definition with a title'>definitions with a title</dfn> so
+        that they can be written in the flow of the sentence without disruption.
+      </p>
+      <p>
+        Sometimes you will see an <dfn><abbr title='abbreviation-based definition'>AbbrDef</abbr></dfn>, which
+        is an abbreviation-based definition.
+      </p>
+      <p>
+        One thing that should definitely work is creating <dfn>definitions
+          over
+        multiple
+            lines</dfn> in the source.
+      </p>
+      <p>
+        It is then possible to reuse them. The title trick works both ways so that <a title='definition'>definitions</a>
+        can be reused fluidly. It would be possible to automatically detect them but for the time being
+        they require an <code>a</code> element.
+      </p>
+      <p>
+        This should have no problem mixing up with <code>abbr</code> as <a title='abbreviation-based definition'>AbbrDef</a> shows, and a <a>definition
+        with a title</a> works over several lines, just like <a>definitions over multiple lines</a>.
+      </p>
+    </section>
+    
+    <section>
+      <h2>A Good Reference</h2>
+      <p>
+        One can trivially make references to any specification, say for instance [[WIDGETS]], [[WICD]],
+        and even in a normative way [[!REX]] or [[!SVGMOBILE12]]. It's all about I18N, [[ZHMARK]].
+      </p>
+    </section>
+    
+    <section>
+      <h2>Russian Turtles</h2>
+      <p>
+        This section has an <code>h2</code> title in the original source.
+      </p>
+      <section>
+        <h2>Russian Turtles</h2>
+        <p>
+          This section has an <code>h2</code> title in the original source.
+        </p>
+        <section>
+          <h2>Russian Turtles</h2>
+          <p>
+            This section has an <code>h2</code> title in the original source.
+          </p>
+          <section>
+            <h2>Russian Turtles</h2>
+            <p>
+              This section has an <code>h2</code> title in the original source.
+            </p>
+            <section>
+              <h2>Russian Turtles</h2>
+              <p>
+                This section has an <code>h2</code> title in the original source.
+              </p>
+              <section>
+                <h2>Russian Turtles</h2>
+                <p>
+                  This section has an <code>h2</code> title in the original source.
+                </p>
+              </section>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
+
+    <section class='appendix'>
+      <h2>Acknowledgements</h2>
+      <p>
+        Many thanks to Marcos Cáceres for moral support, and to Bert Bos and Geoffrey Sneddon for their
+        tools from which I pilfered joyfully.
+      </p>
+    </section>
+  </body>
+</html>

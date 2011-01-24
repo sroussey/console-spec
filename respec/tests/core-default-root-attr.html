@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Core Defaulting Root Attributes</title>
+    <script src='../js/require.js' type='text/javascript' charset='utf-8'></script>
+    <script src='../js/respec2.js' type='text/javascript' charset='utf-8'></script>
+    <script src='qunit.js' type='text/javascript' charset='utf-8'></script>
+    <script src='common.js' type='text/javascript' charset='utf-8'></script>
+    <script>
+      respec2(
+        // DEPENDENCIES
+        ["core/default-root-attr"],
+        {},
+        function (dra) {
+            // -------------------------------------------------------------------------------------------
+            //  EDIT TESTS HERE....
+            // -------------------------------------------------------------------------------------------
+            module("DRA");
+            test("Defaults if nothing is there", function () {
+                var doc = makeDoc("", "");
+                var root = doc.documentElement;
+                stop(1000);
+                dra.run({}, doc, function () {
+                    ok(root.hasAttribute("lang"), "has lang");
+                    equals(root.getAttribute("lang"), "en", "lang is en");
+                    ok(root.hasAttribute("dir"), "has dir");
+                    equals(root.getAttribute("dir"), "ltr", "dir is ltr");
+                    start();
+                });
+            });
+            
+            test("Doesn't default if there's a lang", function () {
+                var doc = makeDoc("", "");
+                var root = doc.documentElement;
+                root.setAttribute("lang", "fr");
+                stop(1000);
+                dra.run({}, doc, function () {
+                    equals(root.getAttribute("lang"), "fr", "lang is fr");
+                    ok(!root.hasAttribute("dir"), "does not have dir");
+                    start();
+                });
+            });
+            // -------------------------------------------------------------------------------------------
+            //  THE REST IS TEMPLATE (EXCEPT THE TITLE).
+            // -------------------------------------------------------------------------------------------
+        });
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='content'>
+        <h2 id='qunit-banner'></h2>
+        <h2 id='qunit-userAgent'></h2>
+        <ol id='qunit-tests'></ol>
+      </div>
+    </div>
+  </body>
+</html>

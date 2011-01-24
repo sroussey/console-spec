@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <title>Testing local postMessage</title>
+  </head>
+  <body>
+    <p>
+      One of the goals of ReSpec is to work equally well locally and online so that editors
+      may see their changes without having to commit anything first. This leads to interesting
+      issues with same-origin policies, most notably with the fact that content running from
+      <code>file:</code> is not allowed to access content in most other directories.
+    </p>
+    <p>
+      HTML5 <code>postMessage</code> was designed to work around this, but I wasn't sure how
+      well it would fare with local FS messaging. This is the test.
+    </p>
+    <table>
+      <tr>
+        <th>Method</th>
+        <th>Result</th>
+      </tr>
+      <tr>
+        <td>XHR</td>
+        <td id='xhr'>Not run</td>
+      </tr>
+      <tr>
+        <td><code>iframe</code>  content</td>
+        <td id='ifr'>Not run</td>
+      </tr>
+      <tr>
+        <td><code>postMessage</code> </td>
+        <td id='pm'>Not run</td>
+      </tr>
+    </table>
+    <pre id='log'></pre>
+  </body>
+  <script src='local-postmessage.js' type='text/javascript' charset='utf-8'></script>
+</html>
