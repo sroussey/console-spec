@@ -53,14 +53,15 @@
   </head>
   <body>
     <section id='abstract'>
-      <p>
-        This specification defines the <code>Console</code> interface,
-        which represents a means for programatically writing messages,
-        data, and other output to a console such as a standalone shell
-        environment for a scripting language, an operating-system shell,
-        or the console component of a Web-developer toolsuite in a Web
-        browser.</p>
-      </p>
+      <p>This specification provides a language-neutral
+      <code>Console</code> interface compatible with the JavaScript
+      <code>window.console</code> object that first appeared as part of the
+      <a href="http://http://getfirebug.com/">Firebug</a> plugin for
+      Mozilla Firefox and that has subsequently been implemented in other
+      major browsers, as well as in non-browser JavaScript environments
+      such as <a href="http://nodejs.org">Node</a> and
+      <a href="http://code.google.com/p/phantomjs/">PhantomJS</a>.</p>
+
       <p class="note">
         Additional editorial contributions to this document are welcome.
         For details on how to contribute, see the
@@ -73,67 +74,20 @@
       </p>
     </section>
 
-    <section class='informative' id="background">
-      <h2>Background and scope</h2>
-      <p>Conceptually, a
-      <dfn id="console-term" title="console-term">console</dfn>
-      is a particular kind of “window” to which output can be written and
-      recorded and from which that output may subsequently be displayed or
-      otherwise accessed (for example, through non-visual mechanisms such
-      as accessibility technology software that makes the information from
-      the console available aurally).</p>
+    <section class='informative' id="introduction">
+      <h2>Introduction</h2>
 
-      <p class="note">In addition to simply displaying information, many
-      consoles also support interactive input. Such consoles act as
-      command-line interpreters, allowing users to enter commands or
-      program statements, and then immediately display the results of
-      evaluating those commands or statements. However, this specification
-      does not address at all that command-line interpreter aspect of
-      consoles. It instead focuses only on the interface for
-      programatically writing output to consoles.</p>
-      </p>
-
-      <p>Among other purposes that consoles have, they are commonly used by
-      developers while testing and debugging programs and scripts, in the
-      following way:</p>
-
-      <ul>
-         <li>the code for a program or script invokes methods that cause
-         “payloads” to be sent to a console, along with metadata about
-         those payloads</li>
-         <li>a payload can be a debugging message, data such as the values
-         of particular variables, and even entire objects</li>
-         <li>payload metadata can include properties that indicate
-         conditions the payload is associated with; for example, metadata
-         that indicates an error condition or a warning condition</li>
-         <li>the console displays the payload, perhaps even (in the case of
-         object payloads) rendering it in a way that allows it to be
-         interactively examined in the console (for example, by providing a
-         collapsible tree view of the object)</li>
-         <li>additionally, the console can use the payload metadata to
-         supplement the display of the payload itself; for example, for a
-         payload associated with an error condition, the console can
-         prepend the string “<code>Error</code>” or an error icon to its
-         rendering of the payload</li>
-      </ul>
-
-      <p>Examples of specific classes of console implementations that
-      provide a mechanism like the one described above include:</p>
-
-      <ul>
-       <li>the console components of Web-developer toolsuites in Web browsers</li>
-       <li>interactive standalone shell environments for scripting languages</li>
-       <li>non-interactive interpreters for scripting languages which send
-       their output to operating-system shells</li>
-      </ul>
-
-      <p>This specification is intended to provide a language-neutral
-      console model inspired by, and compatible with, the JavaScript
+      <p>This specification defines a language-neutral
+      <a><code>Console</code></a> interface that represents a means for
+      programatically writing output to a console such as a standalone
+      shell environment for a scripting language, an operating-system
+      shell, or the console component of a Web-developer toolsuite in a Web
+      browser. The interface is compatible with the JavaScript
       <code>window.console</code> object that first appeared as part of the
       <a href="http://http://getfirebug.com/">Firebug</a> plugin for
       Mozilla Firefox and that has subsequently been implemented in other
-      major browsers, as well as in so-called “server side” JavaScript
-      environments such as <a href="http://nodejs.org">node</a>.</p>
+      major browsers, as well as in non-browser JavaScript environments
+      such as <a href="http://nodejs.org">Node</a>.</p>
 
       <p>The scope of this specification is thus limited to:</p>
 
@@ -152,45 +106,33 @@
       </ul>
     </section>
 
-    <section id="infrastructure">
-    <h2>Common infrastructure</h2>
-    <p>This section defines concepts and terminology used in other parts of
-    this specification.</p>
-      <section id="terminology">
-        <h2>Terminology</h2>
-        <dl>
-          <dt><dfn id="" title="">…</dfn></dt>
-          <dd>…</dd>
-        </dl>
-      </section>
-      <section id='conformance'>
-        <p>
-          This specification defines a single conformance class: a
-          <a>conforming console handler</a>.</p>
-        <p>
-          A <dfn id="console-handler" title="console handler">console handler</dfn>
-          is any implementation capable of processing
+    <section id='conformance'>
+      <p>
+        This specification defines a single conformance class: a
+        <a>conforming console handler</a>.</p>
+      <p>
+        A <dfn id="console-handler" title="console handler">console handler</dfn>
+        is any implementation capable of processing
+        <a><code>Console</code></a>
+        <a title="payload">payloads</a>
+        according to the definitions and requirements
+        provided in this specification.</p>
+        <p>A <dfn id="conforming-console-handler" title="conforming console handler">conforming console handler</dfn>
+        is any
+        <a>console handler</a>
+        that conforms to the definitions and requirements provided in
+        this specification.</p>
+        <p><a title="conforming console handler">Conforming console handlers</a>
+        MUST:</p>
+        <ul>
+          <li>expose a
           <a><code>Console</code></a>
+          interface as defined in this specification</li>
+          <li>process
           <a title="payload">payloads</a>
-          according to the definitions and requirements
-          provided in this specification.</p>
-          <p>A <dfn id="conforming-console-handler" title="conforming console handler">conforming console handler</dfn>
-          is any
-          <a>console handler</a>
-          that conforms to the definitions and requirements provided in
-          this specification.</p>
-          <p><a title="conforming console handler">Conforming console handlers</a>
-          MUST:</p>
-          <ul>
-            <li>expose a
-            <a><code>Console</code></a>
-            interface as defined in this specification</li>
-            <li>process
-            <a title="payload">payloads</a>
-            according to the requirements given in this specification</li>
-          </ul>
-        </p>
-      </section>
+          according to the requirements given in this specification</li>
+        </ul>
+      </p>
     </section>
 
     <section id="the-console-interface">
@@ -199,22 +141,21 @@
         The <a><code>Console</code><a> interface
         represents a means for programatically writing output
         <a title="payload">payloads</a>
-        to a
-        <a title="console-term">console</a>.</p>
+        to a console.</p>
 
       <dl title='interface Console' class='idl'>
         <dt>void log (in any... args)</dt>
         <dd>
-          <a title="send a payload">Sends a payload</a>
+          <a title="output a payload">Outputs a payload</a>
           to the console, with the value of its
           <a><code>PayloadContents</code></a> property set to <var>args</var>.
           <span class="notes-inline">
           <a>permits format string</a>,
-          <a>writes to standard out</a></span>
+          <a>writes to stdout</a></span>
         </dd>
         <dt>void debug (in any... args)</dt>
         <dd>
-          <a title="send a payload">Sends a payload</a>
+          <a title="output a payload">Outputs a payload</a>
           to the console, with the value of its
           <a><code>PayloadContents</code></a> property set to <var>args</var>,
           and the value of its
@@ -223,11 +164,11 @@
           was called.
           <span class="notes-inline">
           <a>permits format string</a>,
-          <a>writes to standard error</a></span>
+          <a>writes to stderr</a></span>
         </dd>
         <dt>void info (in any... args)</dt>
         <dd>
-          <a title="send a payload">Sends a payload</a>
+          <a title="output a payload">Outputs a payload</a>
           to the console, with the value of its
           <a><code>PayloadContents</code></a> property set to <var>args</var>,
           and the value of its
@@ -240,11 +181,11 @@
           was called.
           <span class="notes-inline">
           <a>permits format string</a>,
-          <a>writes to standard error</a></span>
+          <a>writes to stderr</a></span>
         </dd>
         <dt>void warn (in any... args)</dt>
         <dd>
-          <a title="send a payload">Sends a payload</a>
+          <a title="output a payload">Outputs a payload</a>
           to the console, with the value of its
           <a><code>PayloadContents</code></a> property set to <var>args</var>,
           and the value of its
@@ -257,11 +198,11 @@
           was called.
           <span class="notes-inline">
           <a>permits format string</a>,
-          <a>writes to standard error</a></span>
+          <a>writes to stderr</a></span>
         </dd>
         <dt>void error (in any... args)</dt>
         <dd>
-          <a title="send a payload">Sends a payload</a>
+          <a title="output a payload">Outputs a payload</a>
           to the console, with the value of its
           <a><code>PayloadContents</code></a> property set to <var>args</var>,
           and the value of its
@@ -274,7 +215,7 @@
           was called.
           <span class="notes-inline">
           <a>permits format string</a>,
-          <a>writes to standard error</a></span>
+          <a>writes to stderr</a></span>
         </dd>
         <dt>void assert (boolean expression, in any... args)</dt>
         <dd>
@@ -283,11 +224,11 @@
           <code>true</code>,
           <a title="throw-assertion-failed">throws an <i>assertion failed</i> exception</a>
           and, if <var>args</var> is specified,
-          <a title="send a payload">sends a payload</a>
+          <a title="output a payload">outputs a payload</a>
           to the console, with the value of its
           <a><code>PayloadContents</code></a> property set to <var>args</var>.
           <span class="notes-inline">
-          <a>writes to standard error</a></span>
+          <a>writes to stderr</a></span>
         </dd>
       </dl>
       <div class="note">
@@ -300,86 +241,76 @@
         subsequent arguments become the <a>argument list</a> for that
         <a>format string</a>.</li>
         <li>For calls of methods whose descriptions above have the
-        annotation <dfn id="writes-to-standard-out" title="writes to standard
-        out">writes to standard out</dfn>: If the environment to which the
-        <a>console handler</a> writes output has a distinction between
-        standard out and standard error, the method writes to standard
-        out.</li>
+        annotation <dfn id="writes-to-stdout" title="writes to stdout">writes to stdout</dfn>:
+        If the environment to which the
+        <a>console handler</a> writes output has separate data streams for
+        standard output and standard error, the method writes to standard
+        output.</li>
         <li>For calls of methods whose descriptions above have the
-        annotation <dfn id="writes-to-standard-error" title="writes to standard
-        error">writes to standard error</dfn>: If the environment to which the
-        <a>console handler</a> writes output has a distinction between
+        annotation
+        <dfn id="writes-to-stderr" title="writes to stderr">writes to stderr</dfn>:
+        If the environment to which the
+        <a>console handler</a> writes output has separate data streams for
         standard out and standard error, the method writes to standard
         error.</li>
       </div>
-      <section id="format-strings">
-        <h2>Format strings</h2>
-        <p>Some <a><code>Console</code> methods support use of printf-like
-        <a title="format string">format strings</a> 
-        <p>A <dfn id="format-string" title="format string">format string</dfn>
-        is a printf-like string that contains ordinary literal text in
-        combination with <a title="conversion specifier">conversion specifiers</a>.</p>
-
-        <p>The following is an example that uses a <a>format string</a>.</p>
-        <pre class="example">foo</pre>
-        
-        <p>A <dfn id="conversion-specifier" title="conversion specifier">conversion specifier</dfn>
-        is a simple form of markup consisting of a "<code>%</code>"
-        character followed by a single character and which are not rendered liter In
-        <a><code>Console</code></a> method
-        calls that allow <a>format strings</a>, the <a>format string</a> is
-        always the first argument, and is followed by one or more arguments
-        that serve as its <a>argument list</a>.
-        The <dfn id="argument-list" title="argument list">argument
-        list</dfn> for a <a>format string</a> consists of .</p>
-      </section>
     </section>
-    <section id="payload-handling">
-      <h2>Handling payloads</h2>
-      <p>This section specifies how
-      <a title="conforming console handler">conforming console handlers</a>
-      <a title="send a payload">send payloads</a>
-      and 
-      <a title="process a payload">process payloads</a>.</p>
-      </p>
-
-      <section class="informative" id="payload-properties">
-        <h2>The payload concept</h2>
-        <p>Conceptually, a
+    <section id="payload" class="informative">
+      <h2>Payloads</h2>
+      <p>Conceptually, a
         <dfn id="payload" title="payload">payload</dfn>
-        is a unit of information for output to a console. Examples of the
-        possible contents of a <a>payload</a> include:</p>
+        consists of one or more
+        <dfn id="payload-item" title="payload item">payload items</dfn>,
+        each of which can be a particular data type; for example, a literal
+        such as a string or number, or identifier such as a variable name
+        or an object name.</p>
+
+       <p>There are two broad types of payloads:</p>
+
         <ul>
-          <li>a literal message string</li>
-          <li>a data item, such as the value of a variable</li>
-          <li>an object</li>
-          <li>a “printf”-like format string, followed by additional
-          parameters, with format specifiers such as "<code>%s</code>" to
-          indicate where in the rendered message the values of the other
-          parameters are to be displayed</li>
-          <li>any combination of literal message strings, data items, and objects</li>
+          <li><a title="non-format-string payload">non-format-string payloads</a></li>
+          <li><a title="format-string payload">format-string payloads</a></li>
         </ul>
-      </section>
-      <section id="payload-properties">
-        <h2>The properties of a payload</h2>
-        <p class="informative">A
-        <dfn id="payload" title="payload">payload</dfn>
-        consists of three abstract properties:
-          <a><code>PayloadContents</code></a>,
-          <a><code>LineNumber</code></a>,
-           and
+
+        <p>Both classes of <a>payload</a> have certain
+        <a title="payload-properties">properties</a>, and invoking
+        a method that causes a <a>payload</a> to be
+        <a title="output a payload">output to the console</a>
+        causes the <a>payload</a>, conceptually, to be sent to a <a>console
+        handler</a> along with its properties. The <a>console handler</a>
+        then renders the <a>payload</a>, displaying each <a>payload item</a> in a
+        way appropriate for its data type and, in the case of
+        <a>format-string payloads</a>, in accordance with the <a>format
+        specifiers</a> in its <a>format string</a>. For example, in the
+        case of a <a>payload item</a> that is an identifier for an object,
+        the <a>console handler</a> can provide a collapsible/hyperlinked
+        tree view of the object. Additionally, the console can use the <a
+        title="payload-properties">payload property information</a> to
+        further supplement the display of the payload itself; for example,
+        for a payload associated with an error condition, the console can
+        prepend to its rendering of the payload a string such
+        “<code>Error</code>”, and/or an error icon.</p>
+
+        <section id="payload-properties" class="informative">
+          <h2>The properties of a payload</h2>
+          <p>A <a>payload</a> consists of three abstract
+          <dfn id="payload-properties" title="payload properties">payload properties</dfn>:
+            <a><code>PayloadContents</code></a>,
+            <a><code>LineNumber</code></a>,
+             and
           <a><code>Severity</code></a>.</p>
-        <dl>
-          <dt><dfn id="PayloadContents" title="PayloadContents"><code>PayloadContents</code></dfn></dt>
-          <dd>The actual content of the <a>payload</a>, which consists of one
-          or more <dfn id="payload-item" title="payload items">payload items</dfn>.
+          <dl>
+            <dt><dfn id="PayloadContents" title="PayloadContents"><code>PayloadContents</code></dfn></dt>
+            <dd>The actual content of the <a>payload</a>, which consists of one
+            or more <dfn id="payload-item" title="payload items">payload items</dfn>.</dd>
 
-          <dt><dfn id="LineNumber" title="LineNumber"><code>LineNumber</code></dfn></dt>
-          <dd>A source-code line number with which to associate a <a>payload</a>. …</dd>
+            <dt><dfn id="LineNumber" title="LineNumber"><code>LineNumber</code></dfn></dt>
+            <dd>A source-code line number with which to associate a <a>payload</a>. …</dd>
 
-          <dt><dfn id="Severity" title="Severity"><code>Severity</code></dfn></dt>
-          <dd>An indicator of the severity level of a <a>payload</a>. There
-          are three possible severity levels: <i>Error</i>, <i>Warning</i>, and <i>Info</i>.</dd>
+            <dt><dfn id="Severity" title="Severity"><code>Severity</code></dfn></dt>
+            <dd>An indicator of the severity level of a <a>payload</a>. There
+            are three possible severity levels: <i>Error</i>, <i>Warning</i>, and <i>Info</i>.</dd>
+          </dl>
           <p class="note-inline">The
           <a><code>PayloadContents</code></a>,
           <a><code>LineNumber</code></a>,
@@ -389,22 +320,56 @@
           any specific entities within an implementation of this
           specification.</p>
         </section>
+
+        <section id="non-format-string-payloads" class="informative">
+          <h2>Non-format-string payloads</h2>
+          <p><dfn id="non-format-string-payload" title="non-format-string payload">Non-format-string payloads</dfn>
+          are payloads whose first <a>payload item</a> is not a <a title="format string">format string</a>.</p>
+        </section>
+
+        <section id="format-string-payloads" class="informative">
+          <h2>Format-string payloads</h2>
+          <p>Some <a><code>Console</code></a> methods support can output
+          <dfn id="format-string-payload" title="format-string payload">format-string payloads</dfn>,
+          which are payloads that use printf-like <a title="format string">format strings</a>.</p>
+
+          <p>A <dfn id="format-string" title="format string">format string</dfn>
+          is a string that contains ordinary literal text in
+          combination with <a title="format specifier">format specifiers</a>.</p>
+
+          <p>The following is an example that uses a <a>format string</a>.</p>
+          <pre class="example">console.log()</pre>
+          
+          <p>In <a><code>Console</code></a> method
+          calls that allow <a>format strings</a>, the <a>format string</a> is
+          always the first argument, and is followed by one or more arguments
+          that serve as its
+          <dfn id="argument-list" title="argument list">argument list</dfn>.</p>
+
+          <p>The <dfn id="conversion-specifier" title="format specifier">format specifiers</dfn>
+          in format strings use a simple form of markup consisting of a "<code>%</code>"
+          character followed by a single character.</p>
+          <p><a title="format specifier">Format specifiers</a> are not
+          rendered literally in output but instead cause arguments from the
+          <a>argument list</a> to be fetched and rendered according to the specified
+          format. The arguments are fetched from the <a>argument</a> list in the
+          same order as the <a title="format specifier">format
+          specifiers</a>; the first <a>format specifier</a>
+          causes the first argument in the <a>argument list</a> to be fetched, the
+          second <a>format specifier</a> causes the second argument in the
+          <a>argument list</a> to be fetched, and so on.</p>
+        </section>
       </section>
-      <section id="sending-payloads">
-        <h2>Sending payloads</h2>
-        <p>To <dfn id="send-a-payload" title="send a payload">send a payload</dfn>,
+      <section id="output">
+        <h2>Output</h2>
+        <p>To <dfn id="output-a-payload" title="output a payload">output a payload</dfn>,
         a <a>conforming console handler</a> MUST follow these steps: …</p>
-      </section>
-      <section id="processing-payloads">
-        <h2>Processing payloads</h2>
-        <p>To <dfn id="process-a-payload" title="process a payload">process a payload</dfn>,
-        a <a>conforming console handler</a> MUST follow these steps: …</p>
-      </section>
-      <section id="assertion-failed-exception">
-        <h2>Throwing an <i>assertion failed</i> exception</h2>
-        <p>To
-        <dfn id="throw-assertion-failed" title="throw-assertion-failed">throw an <i>assertion failed</i> exception</dfn>,
-        a <a>conforming console handler</a> MUST….</p>
+        <section id="assertion-failed-exception">
+          <h2>Handling exceptions</h2>
+          <p>To
+          <dfn id="throw-assertion-failed" title="throw-assertion-failed">throw an <i>assertion failed</i> exception</dfn>,
+          a <a>conforming console handler</a> MUST….</p>
+        </section>
       </section>
     </section>
     <section class='appendix'>
